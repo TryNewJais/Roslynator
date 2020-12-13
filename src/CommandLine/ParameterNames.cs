@@ -6,6 +6,7 @@ namespace Roslynator.CommandLine
     {
         public const string Depth = "depth";
         public const string Display = "display";
+        public const string FixScope = "fix-scope";
         public const string IgnoredMemberParts = "ignored-member-parts";
         public const string IgnoredNamespaceParts = "ignored-namespace-parts";
         public const string IgnoredParts = "ignored-parts";
@@ -21,6 +22,7 @@ namespace Roslynator.CommandLine
         public const string RootDirectoryUrl = "root-directory-url";
         public const string SeverityLevel = "severity-level";
         public const string SymbolGroups = "symbol-groups";
+        public const string TargetVersion = "target-version";
         public const string Visibility = "visibility";
         public const string WithFlags = "with-flags";
         public const string WithoutFlags = "without-flags";

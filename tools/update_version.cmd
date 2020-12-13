@@ -2,11 +2,14 @@
 
 rem dotnet install tool -g orang.dotnet.cli
 
-set _apiVersion=1.0.0.22
-set _version=2.3.0.1
-set _version3=2.3.1
+set _apiVersion=1.0.0.29
+set _formattingVersion=1.0.0.3
+set _version=3.0.2.0
+set _version3=3.0.1
+set _cliVersion=0.1.1.0
+set _cliVersion3=0.1.1
 set _root=..\src
-set _options=from-file -t m r -y t -v n -o "orang.log" v=di
+set _options=from-file -t m r -y trim-line -v n -o "orang.log" v=di
 
 orang replace ^
   "%_root%\Analyzers\Analyzers.csproj" ^
@@ -15,6 +18,7 @@ orang replace ^
   "%_root%\Common\Common.csproj" ^
   "%_root%\Workspaces.Common\Workspaces.Common.csproj" ^
   "%_root%\Refactorings\Refactorings.csproj" ^
+  "%_root%\VisualStudioCode\VisualStudioCode.csproj" ^
  -c "patterns\csproj_version.txt" ^
   %_options% ^
  -r %_version% 
@@ -33,6 +37,15 @@ orang replace ^
  -c "patterns\csproj_version.txt" ^
   %_options% ^
  -r %_apiVersion%
+
+echo.
+
+orang replace ^
+  "%_root%\Formatting.Analyzers\Formatting.Analyzers.csproj" ^
+  "%_root%\Formatting.Analyzers.CodeFixes\Formatting.Analyzers.CodeFixes.csproj" ^
+ -c "patterns\csproj_version.txt" ^
+  %_options% ^
+ -r %_formattingVersion%
 
 echo.
 
@@ -56,6 +69,22 @@ orang replace ^
 echo.
 
 orang replace ^
+  "%_root%\CommandLine\CommandLine.csproj" ^
+  "%_root%\Documentation\Documentation.csproj" ^
+ -c "patterns\csproj_version.txt" ^
+  %_options% ^
+ -r %_cliVersion%
+
+orang replace ^
+  "%_root%\CommandLine\CommandLine.csproj" ^
+  "%_root%\CommandLine\CommandLine.nuspec" ^
+ -c "patterns\package_version.txt" ^
+  %_options% ^
+ -r %_cliVersion3%
+
+echo.
+
+orang replace ^
   "%_root%\VisualStudioCode\package\package.json" ^
  -c "patterns\vscode_version.txt" ^
   %_options% ^
@@ -67,6 +96,6 @@ orang replace ^
   build.cmd ^
  -c "patterns\build_script_version.txt" ^
   %_options% ^
- -r %_version%
+ -r %_version3%
 
 pause
