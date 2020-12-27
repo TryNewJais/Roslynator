@@ -532,17 +532,21 @@ namespace Roslynator.CommandLine
             if (!TryParseOptionValueAsEnum(options.Display, ParameterNames.Display, out MetadataReferenceDisplay display, MetadataReferenceDisplay.Path))
                 return 1;
 
+            if (!TryParseOptionValueAsEnumFlags(options.Type, ParameterNames.Type, out MetadataReferenceFilter metadataReferenceFilter, MetadataReferenceFilter.Dll | MetadataReferenceFilter.Project))
+                return 1;
+
             if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
                 return 1;
 
             var command = new ListReferencesCommand(
                 options,
                 display,
+                metadataReferenceFilter,
                 projectFilter);
 
             CommandResult result = await command.ExecuteAsync(options.Path, options.MSBuildPath, options.Properties);
 
-            return (result.Kind == CommandResultKind.Success) ? 0 : 1;
+            return (result == CommandResult.Success) ? 0 : 1;
         }
     }
 }

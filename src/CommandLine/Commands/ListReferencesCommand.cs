@@ -16,15 +16,19 @@ namespace Roslynator.CommandLine
         public ListReferencesCommand(
             ListReferencesCommandLineOptions options,
             MetadataReferenceDisplay display,
+            MetadataReferenceFilter filter,
             in ProjectFilter projectFilter) : base(projectFilter)
         {
             Options = options;
             Display = display;
+            Filter = filter;
         }
 
         public ListReferencesCommandLineOptions Options { get; }
 
         public MetadataReferenceDisplay Display { get; }
+
+        public MetadataReferenceFilter Filter { get; }
 
         public override async Task<CommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default)
         {
@@ -37,6 +41,7 @@ namespace Roslynator.CommandLine
             foreach (string display in compilations
                 .SelectMany(compilation => compilation.ExternalReferences.Select(reference => (compilation, reference)))
                 .Select(f => GetDisplay(f.compilation, f.reference))
+                .Where(f => f != null)
                 .Distinct()
                 .OrderBy(f => f, StringComparer.InvariantCulture))
             {
@@ -48,7 +53,6 @@ namespace Roslynator.CommandLine
             {
                 WriteLine(Verbosity.Normal);
                 WriteLine($"{count} assembl{((count == 1) ? "y" : "ies")} found", ConsoleColor.Green, Verbosity.Normal);
-                WriteLine(Verbosity.Normal);
             }
 
             return CommandResult.Success;
@@ -59,6 +63,9 @@ namespace Roslynator.CommandLine
                 {
                     case PortableExecutableReference portableReference:
                         {
+                            if ((Filter & MetadataReferenceFilter.Dll) == 0)
+                                return null;
+
                             string path = portableReference.FilePath;
 
                             switch (Display)
@@ -89,6 +96,9 @@ namespace Roslynator.CommandLine
                         }
                     case CompilationReference compilationReference:
                         {
+                            if ((Filter & MetadataReferenceFilter.Project) == 0)
+                                return null;
+
                             return compilationReference.Display;
                         }
                     default:
