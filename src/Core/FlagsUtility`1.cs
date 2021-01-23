@@ -6,10 +6,16 @@ using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 
+#pragma warning disable RCS1223
+
 namespace Roslynator
 {
-    internal abstract class FlagsUtility<T> where T : struct
+    public abstract class FlagsUtility<T> where T : struct
     {
+        private FlagsUtility()
+        {
+        }
+
         public static FlagsUtility<T> Instance { get; } = (FlagsUtility<T>)GetInstance();
 
         private static object GetInstance()
@@ -45,7 +51,7 @@ namespace Roslynator
 
         public abstract T MaxValue { get; }
 
-        public abstract Optional<T> GetUniquePowerOfTwo(IEnumerable<T> reservedValues, bool startFromHighestExistingValue = false);
+        internal abstract Optional<T> GetUniquePowerOfTwo(IEnumerable<T> reservedValues, bool startFromHighestExistingValue = false);
 
         public abstract bool IsZeroOrPowerOfTwo(T value);
 
@@ -53,6 +59,7 @@ namespace Roslynator
 
         public abstract bool IsComposite(T value);
 
+        //TODO: x return immutable array
         public abstract IEnumerable<T> Decompose(T value);
 
         public abstract Optional<T> TryCompose(ImmutableArray<T> values);
@@ -63,7 +70,7 @@ namespace Roslynator
 
             public override sbyte MaxValue => sbyte.MaxValue;
 
-            public override Optional<sbyte> GetUniquePowerOfTwo(IEnumerable<sbyte> reservedValues, bool startFromHighestExistingValue = false)
+            internal override Optional<sbyte> GetUniquePowerOfTwo(IEnumerable<sbyte> reservedValues, bool startFromHighestExistingValue = false)
             {
                 if (reservedValues == null)
                     throw new ArgumentNullException(nameof(reservedValues));
@@ -155,7 +162,7 @@ namespace Roslynator
 
             public override byte MaxValue => byte.MaxValue;
 
-            public override Optional<byte> GetUniquePowerOfTwo(IEnumerable<byte> reservedValues, bool startFromHighestExistingValue = false)
+            internal override Optional<byte> GetUniquePowerOfTwo(IEnumerable<byte> reservedValues, bool startFromHighestExistingValue = false)
             {
                 if (reservedValues == null)
                     throw new ArgumentNullException(nameof(reservedValues));
@@ -247,7 +254,7 @@ namespace Roslynator
 
             public override short MaxValue => short.MaxValue;
 
-            public override Optional<short> GetUniquePowerOfTwo(IEnumerable<short> reservedValues, bool startFromHighestExistingValue = false)
+            internal override Optional<short> GetUniquePowerOfTwo(IEnumerable<short> reservedValues, bool startFromHighestExistingValue = false)
             {
                 if (reservedValues == null)
                     throw new ArgumentNullException(nameof(reservedValues));
@@ -339,7 +346,7 @@ namespace Roslynator
 
             public override ushort MaxValue => ushort.MaxValue;
 
-            public override Optional<ushort> GetUniquePowerOfTwo(IEnumerable<ushort> reservedValues, bool startFromHighestExistingValue = false)
+            internal override Optional<ushort> GetUniquePowerOfTwo(IEnumerable<ushort> reservedValues, bool startFromHighestExistingValue = false)
             {
                 if (reservedValues == null)
                     throw new ArgumentNullException(nameof(reservedValues));
@@ -431,7 +438,7 @@ namespace Roslynator
 
             public override int MaxValue => int.MaxValue;
 
-            public override Optional<int> GetUniquePowerOfTwo(IEnumerable<int> reservedValues, bool startFromHighestExistingValue = false)
+            internal override Optional<int> GetUniquePowerOfTwo(IEnumerable<int> reservedValues, bool startFromHighestExistingValue = false)
             {
                 if (reservedValues == null)
                     throw new ArgumentNullException(nameof(reservedValues));
@@ -523,7 +530,7 @@ namespace Roslynator
 
             public override uint MaxValue => uint.MaxValue;
 
-            public override Optional<uint> GetUniquePowerOfTwo(IEnumerable<uint> reservedValues, bool startFromHighestExistingValue = false)
+            internal override Optional<uint> GetUniquePowerOfTwo(IEnumerable<uint> reservedValues, bool startFromHighestExistingValue = false)
             {
                 if (reservedValues == null)
                     throw new ArgumentNullException(nameof(reservedValues));
@@ -615,7 +622,7 @@ namespace Roslynator
 
             public override long MaxValue => long.MaxValue;
 
-            public override Optional<long> GetUniquePowerOfTwo(IEnumerable<long> reservedValues, bool startFromHighestExistingValue = false)
+            internal override Optional<long> GetUniquePowerOfTwo(IEnumerable<long> reservedValues, bool startFromHighestExistingValue = false)
             {
                 if (reservedValues == null)
                     throw new ArgumentNullException(nameof(reservedValues));
@@ -707,7 +714,7 @@ namespace Roslynator
 
             public override ulong MaxValue => ulong.MaxValue;
 
-            public override Optional<ulong> GetUniquePowerOfTwo(IEnumerable<ulong> reservedValues, bool startFromHighestExistingValue = false)
+            internal override Optional<ulong> GetUniquePowerOfTwo(IEnumerable<ulong> reservedValues, bool startFromHighestExistingValue = false)
             {
                 if (reservedValues == null)
                     throw new ArgumentNullException(nameof(reservedValues));

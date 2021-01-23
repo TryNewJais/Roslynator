@@ -107,8 +107,7 @@ namespace Roslynator
             return EnsureUniqueName(baseName, symbols, isCaseSensitive);
         }
 
-        //TODO: make public
-        internal ImmutableArray<string> EnsureUniqueLocalNames(
+        public ImmutableArray<string> EnsureUniqueLocalNames(
             string baseName,
             SemanticModel semanticModel,
             int position,
@@ -157,7 +156,7 @@ namespace Roslynator
                 .AddRange(semanticModel.LookupSymbols(position));
         }
 
-        internal string EnsureUniqueParameterName(
+        public string EnsureUniqueParameterName(
             string baseName,
             ISymbol containingSymbol,
             SemanticModel semanticModel,
