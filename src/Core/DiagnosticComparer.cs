@@ -5,21 +5,15 @@ using System.Collections;
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 
-#pragma warning disable RCS1223
-
 namespace Roslynator
 {
-    public abstract class DiagnosticComparer : IComparer<Diagnostic>, IEqualityComparer<Diagnostic>, IComparer, IEqualityComparer
+    internal abstract class DiagnosticComparer : IComparer<Diagnostic>, IEqualityComparer<Diagnostic>, IComparer, IEqualityComparer
     {
         public static DiagnosticComparer Id { get; } = new DiagnosticIdComparer();
 
         public static DiagnosticComparer SpanStart { get; } = new DiagnosticSpanStartComparer();
 
-        internal static DiagnosticComparer IdThenFilePathThenSpanStart { get; } = new DiagnosticIdThenFilePathThenSpanStartComparer();
-
-        private StringComparer Comparer => StringComparer.CurrentCulture;
-
-        private StringComparer PathComparer => FileSystemHelpers.CultureComparer;
+        public static DiagnosticComparer IdThenFilePathThenSpanStart { get; } = new DiagnosticIdThenFilePathThenSpanStartComparer();
 
         public abstract int Compare(Diagnostic x, Diagnostic y);
 
@@ -91,7 +85,7 @@ namespace Roslynator
                 if (y == null)
                     return 1;
 
-                return Comparer.Compare(x.Id, y.Id);
+                return string.CompareOrdinal(x.Id, y.Id);
             }
 
             public override bool Equals(Diagnostic x, Diagnostic y)
@@ -105,7 +99,7 @@ namespace Roslynator
                 if (y == null)
                     return false;
 
-                return Comparer.Equals(x.Id, y.Id);
+                return string.Equals(x.Id, y.Id, StringComparison.Ordinal);
             }
 
             public override int GetHashCode(Diagnostic obj)
@@ -113,7 +107,7 @@ namespace Roslynator
                 if (obj == null)
                     return 0;
 
-                return Comparer.GetHashCode(obj.Id);
+                return StringComparer.Ordinal.GetHashCode(obj.Id);
             }
         }
 
@@ -169,12 +163,12 @@ namespace Roslynator
                 if (y == null)
                     return 1;
 
-                int result = Comparer.Compare(x.Id, y.Id);
+                int result = x.Id.CompareTo(y.Id);
 
                 if (result != 0)
                     return result;
 
-                result = PathComparer.Compare(x.Location.SourceTree?.FilePath, y.Location.SourceTree?.FilePath);
+                result = StringComparer.OrdinalIgnoreCase.Compare(x.Location.SourceTree?.FilePath, y.Location.SourceTree?.FilePath);
 
                 if (result != 0)
                     return result;
@@ -193,8 +187,8 @@ namespace Roslynator
                 if (y == null)
                     return false;
 
-                return Comparer.Equals(x.Id, y.Id)
-                    && PathComparer.Equals(x.Location.SourceTree?.FilePath, y.Location.SourceTree?.FilePath)
+                return x.Id == y.Id
+                    && StringComparer.OrdinalIgnoreCase.Equals(x.Location.SourceTree?.FilePath, y.Location.SourceTree?.FilePath)
                     && x.Location.SourceSpan.Start == y.Location.SourceSpan.Start;
             }
 
@@ -204,9 +198,9 @@ namespace Roslynator
                     return 0;
 
                 return Hash.Combine(
-                    Comparer.GetHashCode(obj.Id),
+                    obj.Id.GetHashCode(),
                     Hash.Combine(
-                        PathComparer.GetHashCode(obj.Location.SourceTree?.FilePath),
+                        StringComparer.OrdinalIgnoreCase.GetHashCode(obj.Location.SourceTree?.FilePath),
                         obj.Location.SourceSpan.Start));
             }
         }

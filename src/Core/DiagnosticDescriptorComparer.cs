@@ -5,11 +5,9 @@ using System.Collections;
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 
-#pragma warning disable RCS1223
-
 namespace Roslynator
 {
-    public abstract class DiagnosticDescriptorComparer : IComparer<DiagnosticDescriptor>, IEqualityComparer<DiagnosticDescriptor>, IComparer, IEqualityComparer
+    internal abstract class DiagnosticDescriptorComparer : IComparer<DiagnosticDescriptor>, IEqualityComparer<DiagnosticDescriptor>, IComparer, IEqualityComparer
     {
         public static DiagnosticDescriptorComparer Id { get; } = new DiagnosticDescriptorIdComparer();
 
@@ -74,8 +72,6 @@ namespace Roslynator
 
         private class DiagnosticDescriptorIdComparer : DiagnosticDescriptorComparer
         {
-            private StringComparer Comparer => StringComparer.CurrentCulture;
-
             public override int Compare(DiagnosticDescriptor x, DiagnosticDescriptor y)
             {
                 if (object.ReferenceEquals(x, y))
@@ -87,7 +83,7 @@ namespace Roslynator
                 if (y == null)
                     return 1;
 
-                return Comparer.Compare(x.Id, y.Id);
+                return string.CompareOrdinal(x.Id, y.Id);
             }
 
             public override bool Equals(DiagnosticDescriptor x, DiagnosticDescriptor y)
@@ -101,7 +97,7 @@ namespace Roslynator
                 if (y == null)
                     return false;
 
-                return Comparer.Equals(x.Id, y.Id);
+                return string.Equals(x.Id, y.Id, StringComparison.Ordinal);
             }
 
             public override int GetHashCode(DiagnosticDescriptor obj)
@@ -109,7 +105,7 @@ namespace Roslynator
                 if (obj == null)
                     return 0;
 
-                return Comparer.GetHashCode(obj.Id);
+                return StringComparer.Ordinal.GetHashCode(obj.Id);
             }
         }
 

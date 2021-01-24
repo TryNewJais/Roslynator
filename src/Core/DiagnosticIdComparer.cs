@@ -84,11 +84,11 @@ namespace Roslynator
                 int length2 = DiagnosticIdPrefix.GetPrefixLength(y);
 
                 if (length1 == length2)
-                    return string.Compare(x, 0, y, 0, length1, StringComparison.CurrentCulture);
+                    return string.Compare(x, 0, y, 0, length1, StringComparison.Ordinal);
 
                 int length = Math.Min(length1, length2);
 
-                int result = string.Compare(x, 0, y, 0, length, StringComparison.CurrentCulture);
+                int result = string.Compare(x, 0, y, 0, length, StringComparison.Ordinal);
 
                 if (result != 0)
                     return result;
@@ -111,7 +111,7 @@ namespace Roslynator
                 int length2 = DiagnosticIdPrefix.GetPrefixLength(y);
 
                 return length1 == length2
-                    && string.Compare(x, 0, y, 0, length1, StringComparison.CurrentCulture) == 0;
+                    && string.Compare(x, 0, y, 0, length1, StringComparison.Ordinal) == 0;
             }
 
             public override int GetHashCode(string obj)
@@ -121,7 +121,7 @@ namespace Roslynator
 
                 int length = DiagnosticIdPrefix.GetPrefixLength(obj);
 
-                return StringComparer.CurrentCulture.GetHashCode(obj.Substring(0, length));
+                return StringComparer.Ordinal.GetHashCode(obj.Substring(0, length));
             }
         }
     }
