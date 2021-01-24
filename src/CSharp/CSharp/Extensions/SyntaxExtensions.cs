@@ -3091,7 +3091,7 @@ namespace Roslynator.CSharp
             return false;
         }
 
-        internal static bool IsInExpressionTree(
+        public static bool IsInExpressionTree(
             this SyntaxNode node,
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default)

@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis.CSharp;
 namespace Roslynator.CSharp
 {
     [Flags]
-    internal enum DefaultSyntaxOptions
+    public enum DefaultSyntaxOptions
     {
         /// <summary>
         /// No option specified.
