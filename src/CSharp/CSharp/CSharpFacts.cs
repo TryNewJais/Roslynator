@@ -513,8 +513,7 @@ namespace Roslynator.CSharp
             return false;
         }
 
-        //TODO: make CSharpFacts.IsNumericType public
-        internal static bool IsNumericType(SpecialType specialType)
+        public static bool IsNumericType(SpecialType specialType)
         {
             switch (specialType)
             {

@@ -150,7 +150,7 @@ namespace Roslynator.CSharp
             return token.WithAdditionalAnnotations(_simplifierAnnotationArray);
         }
 
-        internal static SyntaxToken WithNavigationAnnotation(this SyntaxToken token)
+        public static SyntaxToken WithNavigationAnnotation(this SyntaxToken token)
         {
             return token.WithAdditionalAnnotations(_navigationAnnotationArray);
         }
